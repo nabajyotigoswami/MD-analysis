@@ -1,0 +1,128 @@
+METHODOLOGY FOR BLOCK ANALYSIS AND CUMULATIVE-MEAN PLOTS
+
+1. Scope of the analysis
+
+The analysis was performed on precomputed molecular-dynamics observables stored in Excel workbooks. The observables included root-mean-square deviation (RMSD), radius of gyration (Rg), solvent-accessible surface area (SASA), molecular-mechanics energy (MM), Poisson-Boltzmann energy (PB), surface-area energy (SA), and binding free energy (Delta G_bind). The scripts described here do not calculate these physical observables from coordinates or trajectories. They organize the supplied time-series data into fixed temporal blocks and calculate descriptive statistics for each system and block.
+
+The input files were organized as follows:
+
+- RMSD-WT-replicate-and-R194W.xlsx
+- Rg-WT-replicate-and-R194W.xlsx
+- SASA-WT-replicate-and-R194W.xlsx
+- MM-WT-replicate-and-R194W.xlsx
+- PB-WT-replicate-and-R194W.xlsx
+- SA-WT-replicate-and-R194W.xlsx
+- Delta Gbind-WT-replicate-and-R194W.xlsx
+
+The first column of each input file was treated as simulation time in nanoseconds. Remaining columns were treated as separate systems or conditions. For the MM input, time values were already recorded at 0.5 ns intervals (0, 0.5, 1.0, 1.5, ... ns) and were therefore used directly without frame-to-time conversion.
+
+2. Temporal blocking
+
+Each 300 ns simulation was divided into six consecutive, non-overlapping blocks of 50 ns:
+
+0-50 ns, 50-100 ns, 100-150 ns, 150-200 ns, 200-250 ns, and 250-300 ns.
+
+For a time value t, the block index was assigned as:
+
+    block_index = floor(t / 50 ns)
+
+The index was limited to the final block so that values at or beyond the nominal endpoint were assigned to the last interval. The number of blocks was calculated as:
+
+    number_of_blocks = ceiling(total_time / block_size)
+
+where total_time = 300 ns and block_size = 50 ns.
+
+Blocking is commonly used in the analysis of correlated simulation data because observations collected close together in a molecular-dynamics trajectory are not statistically independent. It provides a transparent way to summarize the temporal behavior and compare different portions of a trajectory. The block size should be selected with consideration of the correlation time and the equilibration behavior of the observable; the fixed 50 ns choice was retained consistently for all parameters in this analysis.
+
+3. Data cleaning and numeric conversion
+
+The first column was converted to numeric values. Rows whose time value could not be converted to a number were removed. Each system column was independently converted to numeric values, and values that could not be converted were treated as missing. Missing values were excluded from the statistics of the corresponding system and block.
+
+The analysis required at least one time column and one system column. Input files were read from Excel (.xlsx or .xls) or CSV format. Excel files were read from the first worksheet by default.
+
+4. Block-wise statistics
+
+For every system j and temporal block k, the following quantities were calculated from the valid observations x_(j,k,i):
+
+    N_(j,k)    = number of valid observations
+    Mean_(j,k) = (1 / N_(j,k)) * sum_i x_(j,k,i)
+    SD_(j,k)   = sample standard deviation of x_(j,k,i)
+    Min_(j,k)  = minimum valid observation
+    Max_(j,k)  = maximum valid observation
+
+The standard deviation is the sample standard deviation, using N - 1 in the denominator:
+
+    SD = sqrt[ sum_i (x_i - Mean)^2 / (N - 1) ]
+
+Thus, the reported SD represents the within-block dispersion of the supplied observations. It is not a standard error of the mean and should not be interpreted as an independent uncertainty estimate unless the statistical assumptions have been examined separately.
+
+The resulting tables contained the following columns:
+
+    System | Block | N | Mean | SD | Min | Max
+
+Blocks were stored as ordered categorical values so that the output followed chronological order rather than alphabetical order. Results were then sorted by system and block and exported to an Excel workbook named by appending _block_statistics.xlsx to the input filename.
+
+5. Cumulative-mean analysis
+
+Cumulative means were calculated from the block Mean values for each system. If m_(j,k) denotes the mean of system j in block k, the cumulative mean after block K was calculated as:
+
+    CM_(j,K) = (1 / K) * sum_(k=1 to K) m_(j,k)
+
+The cumulative-mean plots therefore show the running arithmetic mean of the six block means. They do not pool all raw observations across blocks and they are unweighted with respect to the number of observations in each block. If block sizes contain different numbers of valid observations, this cumulative mean is not identical to a cumulative mean calculated from all raw observations. This convention was used to match the block-level summary workflow.
+
+For the combined plots, the four system series for a given parameter were displayed on the same figure. Separate figures were generated for RMSD, Rg, SASA, MM, PB, SA, and Delta G_bind. Figures were saved as high-resolution PNG files at 1200 dots per inch (dpi).
+
+6. Reproducibility and implementation
+
+The analysis was implemented in Python using pandas for tabular data handling, NumPy for numerical operations, and Matplotlib for visualization. The principal analysis parameters were:
+
+    Total simulation time: 300 ns
+    Block duration: 50 ns
+    Number of blocks: 6
+    Excel worksheet: first worksheet by default
+    Standard deviation: sample SD
+    Plot resolution: 1200 dpi for cumulative-mean figures
+
+The scripts support explicit input and output paths. When an input path is omitted, each parameter-specific script searches the project directory for the expected filename prefix. For example, the MM script searches for an MM-prefixed file, while the binding-energy script searches for a file beginning with Delta Gbind. Explicit paths are recommended for fully reproducible execution.
+
+7. Interpretation and limitations
+
+The block summaries should be interpreted as descriptive temporal summaries of the supplied data. Before using the block means for formal statistical inference, the following should be considered:
+
+- The initial trajectory portion should be checked for equilibration and, if necessary, excluded before block analysis.
+- The 50 ns block length should be compared with the estimated autocorrelation time of each observable.
+- The number of effective independent samples may be substantially smaller than N because of temporal correlation.
+- Replicates and systems should be distinguished clearly; the scripts summarize columns independently and do not perform hypothesis tests between systems.
+- For MM/PBSA-related quantities, the physical definition, force field, dielectric constants, solvent model, residue decomposition procedure, and frame-selection protocol must be reported separately because they are not defined by these block-analysis scripts.
+- Units in the plot labels must match the units of the input workbooks. The scripts assume that the input data are already in the intended units.
+- Values at or beyond 300 ns are assigned to the final block by the implementation; the trajectory endpoint and inclusion rule should therefore be checked when preparing the final manuscript.
+
+8. Manuscript-ready description
+
+Precomputed RMSD, radius of gyration, SASA, MM, PB, SA, and binding free-energy data were analyzed using fixed temporal blocking. Each 300 ns simulation was divided into six consecutive 50 ns intervals. The first column of each input table was interpreted as simulation time in nanoseconds, and subsequent columns represented the analyzed systems. Non-numeric time entries were removed, while non-numeric observable entries were treated as missing and excluded from the corresponding block statistics. For each system and block, the number of valid observations, arithmetic mean, sample standard deviation, minimum, and maximum were calculated. Block categories were ordered chronologically before exporting the results to Excel. Cumulative means were then calculated as the running arithmetic mean of the block means for each system and were visualized for comparison among the four systems. Figures were generated using Matplotlib and saved as high-resolution PNG files at 1200 dpi.
+
+9. References
+
+[1] Flyvbjerg, H.; Petersen, H. G. Error Estimates on Averages of Correlated Data. The Journal of Chemical Physics 1989, 91, 461-466. https://doi.org/10.1063/1.457480
+
+This paper provides the standard statistical basis for estimating uncertainties when simulation observations are correlated and is the principal reference for block-averaging considerations.
+
+[2] Allen, M. P.; Tildesley, D. J. Computer Simulation of Liquids, 2nd ed.; Oxford University Press: Oxford, 2017. https://doi.org/10.1093/oso/9780198803195.001.0001
+
+This book provides general guidance on molecular-dynamics sampling, time correlation, statistical analysis, and simulation methodology.
+
+[3] Grossfield, A.; Patrone, P. N.; Roe, D. R.; et al. Best Practices for Quantification of Uncertainty and Sampling Quality in Molecular Simulations. Living Journal of Computational Molecular Science 2018, 1, 5067. https://doi.org/10.33011/livecoms.1.1.5067
+
+This reference is relevant for assessing sampling quality, convergence, uncertainty, and correlation in molecular simulations.
+
+[4] GROMACS Development Team. GROMACS User Manual and Documentation. https://manual.gromacs.org/
+
+Use this reference when the original RMSD, Rg, or SASA values were generated with GROMACS tools. The exact GROMACS version and command options should be reported in the manuscript.
+
+[5] Kumari, R.; Kumar, R.; Lynn, A. g_mmpbsa - A GROMACS Tool for High-Throughput MM-PBSA Calculations. Journal of Chemical Information and Modeling 2014, 54, 1951-1962. https://doi.org/10.1021/ci500020m
+
+Use this reference when the MM/PBSA quantities were generated using g_mmpbsa or a closely related workflow. The original calculation protocol, including dielectric settings and frame selection, should also be reported.
+
+10. Citation note
+
+References [1]-[3] support the statistical treatment and interpretation of correlated molecular-dynamics data. References [4]-[5] should be retained only when the corresponding software or MM/PBSA workflow was used to generate the input observables. The block-analysis scripts themselves perform post-processing and should be described as a reproducible statistical summarization step rather than as the method used to calculate the underlying molecular properties.

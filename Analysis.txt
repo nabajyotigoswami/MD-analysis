@@ -1,0 +1,327 @@
+ANALYSIS OF COMPARISON PLOTS FOR ALL MOLECULAR-DYNAMICS PARAMETERS
+
+1. Purpose and scope
+
+This document describes the interpretation of the comparison plots generated from the block-statistics workbooks for seven molecular-dynamics parameters:
+
+- RMSD: root-mean-square deviation
+- Rg: radius of gyration
+- SASA: solvent-accessible surface area
+- MM: molecular-mechanics energy component
+- PB: Poisson-Boltzmann energy component
+- SA: surface-area energy component
+- Delta G_bind: binding free-energy estimate
+
+The plots compare four systems:
+
+1. XRCC1R194W-LigIIIalpha
+2. XRCC1R194W-Polbeta
+3. XRCC1WT-LigIIIalpha
+4. XRCC1WT-Polbeta
+
+Each comparison plot contains six temporal block means corresponding to 0-50, 50-100, 100-150, 150-200, 200-250, and 250-300 ns. The plotted values are the arithmetic means calculated within each block. Error bars represent the within-block sample standard deviations. The cumulative-mean plots show the running arithmetic mean of the block means and are useful for examining how the apparent average evolves as additional blocks are included.
+
+The observations below are descriptive. They should not be interpreted as formal evidence of statistical significance without replicate-level analysis, uncertainty estimation that accounts for temporal correlation, and appropriate statistical testing.
+
+2. Data basis and comparison strategy
+
+The comparison was based on the following generated block-statistics files:
+
+- RMSD-WT-replicate-and-R194W_block_statistics.xlsx
+- Rg-WT-replicate-and-R194W_block_statistics.xlsx
+- SASA-WT-replicate-and-R194W_block_statistics.xlsx
+- MM-WT-replicate-and-R194W_block_statistics.xlsx
+- PB-WT-replicate-and-R194W_block_statistics.xlsx
+- SA-WT-replicate-and-R194W_block_statistics.xlsx
+- Delta Gbind-WT-replicate-and-R194W_block_statistics.xlsx
+
+Each workbook contains 24 records: four systems multiplied by six temporal blocks. The comparison plots use the Mean column. The SD column is displayed as an error bar where applicable. Because the underlying observations are consecutive molecular-dynamics samples, neighboring observations may be autocorrelated. Consequently, the error bars should be interpreted as within-block dispersion rather than automatically as independent confidence intervals.
+
+A key distinction is necessary for interpretation. The scripts summarize values that were already calculated from the molecular-dynamics trajectories. They do not independently calculate RMSD, Rg, SASA, MM, PB, SA, or Delta G_bind from atomic coordinates. The physical interpretation of the MM/PBSA terms also depends on the original force field, dielectric constants, solvent model, frame selection, and software settings used to generate the input files.
+
+3. Overall numerical summary
+
+The average of the six block means for each system was approximately:
+
+Parameter: RMSD
+- XRCC1R194W-LigIIIalpha: 0.7008 nm
+- XRCC1R194W-Polbeta: 0.6436 nm
+- XRCC1WT-LigIIIalpha: 0.5165 nm
+- XRCC1WT-Polbeta: 0.4569 nm
+
+Parameter: Rg
+- XRCC1R194W-LigIIIalpha: 3.1059 nm
+- XRCC1R194W-Polbeta: 3.2171 nm
+- XRCC1WT-LigIIIalpha: 2.8657 nm
+- XRCC1WT-Polbeta: 3.1732 nm
+
+Parameter: SASA
+- XRCC1R194W-LigIIIalpha: 354.6322
+- XRCC1R194W-Polbeta: 359.2027
+- XRCC1WT-LigIIIalpha: 327.2558
+- XRCC1WT-Polbeta: 357.0605
+
+Parameter: MM
+- XRCC1R194W-LigIIIalpha: -272.1014
+- XRCC1R194W-Polbeta: -317.0022
+- XRCC1WT-LigIIIalpha: -330.5896
+- XRCC1WT-Polbeta: -275.3487
+
+Parameter: PB
+- XRCC1R194W-LigIIIalpha: 220.9276
+- XRCC1R194W-Polbeta: 258.4467
+- XRCC1WT-LigIIIalpha: 317.5670
+- XRCC1WT-Polbeta: 270.1031
+
+Parameter: SA
+- XRCC1R194W-LigIIIalpha: -35.1413
+- XRCC1R194W-Polbeta: -48.6723
+- XRCC1WT-LigIIIalpha: -49.4164
+- XRCC1WT-Polbeta: -42.9463
+
+Parameter: Delta G_bind
+- XRCC1R194W-LigIIIalpha: -86.3151
+- XRCC1R194W-Polbeta: -107.2278
+- XRCC1WT-LigIIIalpha: -62.4389
+- XRCC1WT-Polbeta: -48.1919
+
+The overall averages above are averages of block means, not necessarily averages of every raw observation. If blocks contain unequal numbers of valid observations, an observation-weighted global mean could differ from these values.
+
+4. RMSD comparison
+
+4.1 Observed temporal behavior
+
+RMSD showed the clearest overall increase across the trajectory. The early 0-50 ns block had the lowest or near-lowest value for all systems, while the later blocks generally had higher values.
+
+XRCC1R194W-LigIIIalpha increased from approximately 0.482 nm in the first block to approximately 0.750 nm in the final block. XRCC1R194W-Polbeta increased from approximately 0.420 to 0.765 nm. XRCC1WT-LigIIIalpha increased from approximately 0.284 to 0.634 nm. XRCC1WT-Polbeta increased from approximately 0.386 to 0.543 nm.
+
+The approximate first-to-final block changes were:
+
+- XRCC1R194W-LigIIIalpha: +0.268 nm
+- XRCC1R194W-Polbeta: +0.344 nm
+- XRCC1WT-LigIIIalpha: +0.351 nm
+- XRCC1WT-Polbeta: +0.157 nm
+
+The mutant systems generally had larger overall RMSD values than their corresponding wild-type systems. The largest late-trajectory RMSD values occurred for XRCC1R194W-Polbeta and XRCC1R194W-LigIIIalpha.
+
+4.2 Interpretation
+
+An increasing RMSD may indicate structural relaxation from the starting model, progressive conformational rearrangement, movement between metastable states, or insufficient equilibration of the initial structure. It does not by itself prove structural destabilization. RMSD is measured relative to a reference and is sensitive to the fitting procedure, selected atoms, flexible regions, and large-scale domain motions.
+
+The early low RMSD of XRCC1WT-LigIIIalpha followed by a rise toward approximately 0.6 nm suggests that the initial structure may have been particularly close to the reference during the first block, followed by relaxation. The mutant systems begin at higher RMSD values and remain relatively elevated, which is consistent with a larger deviation from the reference or greater conformational rearrangement. The strong rise for XRCC1R194W-Polbeta is especially important because it coincides with pronounced changes in several energetic parameters.
+
+4.3 Consequences for the study
+
+The RMSD behavior cautions against treating the entire 0-300 ns trajectory as one stationary population without checking equilibration. If the first block represents a relaxation period, analyses should be repeated after excluding the non-equilibrated segment. Conversely, if the RMSD increase reflects a real transition to a different stable state, excluding late blocks would remove biologically relevant information. The trajectory should therefore be examined using structural snapshots, replicate comparisons, and additional observables before selecting an equilibration cutoff.
+
+5. Radius of gyration comparison
+
+5.1 Observed temporal behavior
+
+Rg values were much more stable than RMSD values. Most systems showed a gradual decrease after the initial block, followed by a relatively narrow late-trajectory range.
+
+XRCC1R194W-LigIIIalpha decreased from approximately 3.165 nm in the first block to 3.077 nm in the final block. XRCC1R194W-Polbeta decreased from 3.290 to 3.157 nm. XRCC1WT-LigIIIalpha decreased from 2.988 to 2.818 nm. XRCC1WT-Polbeta decreased from 3.290 to 3.074 nm.
+
+The wild-type LigIIIalpha system had the lowest overall Rg, approximately 2.866 nm, whereas XRCC1R194W-Polbeta had the highest overall Rg, approximately 3.217 nm. The largest block-to-block decline was seen for XRCC1WT-Polbeta.
+
+5.2 Interpretation
+
+The gradual Rg decrease suggests modest compaction or settling during the simulation. The absence of a large late increase indicates that the systems did not undergo a persistent global expansion. This is important because an increasing RMSD with nearly stable Rg can reflect internal rearrangement or domain reorientation rather than a simple unfolding-like expansion.
+
+The lower Rg of XRCC1WT-LigIIIalpha relative to the other systems may indicate a more compact global arrangement under the simulated condition. The higher Rg of XRCC1R194W-Polbeta may indicate a more extended or differently organized ensemble, although Rg alone cannot identify which structural regions cause the difference.
+
+5.3 Consequences for the study
+
+The Rg comparison supports the conclusion that the RMSD increase is not accompanied by an obvious global expansion. The structural changes may therefore involve local rearrangements, interface changes, domain motion, or altered packing. To distinguish these possibilities, Rg should be considered together with residue-level RMSD, RMSF, interdomain distances, radius-of-gyration components, hydrogen bonds, and contact maps.
+
+6. SASA comparison
+
+6.1 Observed temporal behavior
+
+SASA was relatively stable compared with the energetic parameters. The R194W systems generally had higher SASA values than XRCC1WT-LigIIIalpha. XRCC1WT-LigIIIalpha was consistently the lowest-SASA system across the blocks, remaining near 323-338 in the later trajectory.
+
+The first-to-final block changes were approximately:
+
+- XRCC1R194W-LigIIIalpha: 364.36 to 347.42, a decrease of about 4.6 percent
+- XRCC1R194W-Polbeta: 363.85 to 354.63, a decrease of about 2.5 percent
+- XRCC1WT-LigIIIalpha: 338.18 to 322.82, a decrease of about 4.5 percent
+- XRCC1WT-Polbeta: 356.42 to 354.15, a decrease of about 0.6 percent
+
+The largest SASA values occurred during the early blocks for the mutant systems, while the wild-type LigIIIalpha system remained lower throughout.
+
+6.2 Interpretation
+
+The gradual reduction in SASA is compatible with mild compaction, improved packing, or relaxation of solvent-exposed regions. The difference between systems is more informative than the small within-system late change. The higher SASA of the mutant complexes may reflect greater exposure of protein or interface surfaces, altered packing, or a different conformational ensemble.
+
+Because SASA can be calculated for the whole complex, individual chains, binding interfaces, or selected residue groups, the biological interpretation depends strongly on the calculation definition. A global SASA difference should not automatically be described as increased interface exposure unless interface-specific SASA was calculated.
+
+6.3 Consequences for the study
+
+The SASA results reinforce the need to report the atom selection and probe-radius settings. The relatively stable late SASA suggests that the systems may approach a stable global exposure regime, but the higher mutant values warrant interface-specific analysis. Decomposition into total, receptor, ligand, and buried interface SASA could reveal whether the observed difference arises from the binding interface or from unrelated surface regions.
+
+7. MM energy comparison
+
+7.1 Observed temporal behavior
+
+The MM values exhibited strong system-dependent temporal trends. More negative values were observed for several systems in later blocks, but the direction and magnitude differed between systems.
+
+XRCC1R194W-Polbeta changed from approximately -246.62 in the first block to -435.21 in the final block. XRCC1WT-LigIIIalpha changed from -257.40 to -390.89. XRCC1WT-Polbeta changed from -202.30 to -358.45. In contrast, XRCC1R194W-LigIIIalpha changed from -298.41 to -255.90, becoming less negative after the early blocks.
+
+The most negative overall average MM value was observed for XRCC1WT-LigIIIalpha, approximately -330.59, followed by XRCC1R194W-Polbeta at approximately -317.00.
+
+7.2 Interpretation
+
+The MM component commonly represents molecular-mechanics contributions such as bonded, electrostatic, and van der Waals terms, depending on the MM/PBSA implementation. More negative MM values should not be interpreted alone as stronger binding. The total binding free-energy estimate is a combination of several terms, and individual components can compensate one another.
+
+The large negative shifts for XRCC1R194W-Polbeta, XRCC1WT-LigIIIalpha, and XRCC1WT-Polbeta indicate that the energetic decomposition is not stationary over the trajectory. Possible causes include structural relaxation, changing interatomic contacts, sampling of different conformations, or changes in the energetic balance between complex and separated states. The opposite trend for XRCC1R194W-LigIIIalpha demonstrates why the MM term must not be interpreted independently.
+
+7.3 Consequences for the study
+
+A manuscript should report whether MM/PBSA values were calculated from equilibrated frames and whether the same frame-selection rule was applied to every system. If the MM trend is caused by early relaxation, full-trajectory averaging may obscure the behavior of the equilibrated ensemble. If the trend reflects a genuine conformational transition, a single mean may also be inadequate. Block-resolved energetic analysis and convergence checks should therefore accompany any final binding-energy comparison.
+
+8. PB energy comparison
+
+8.1 Observed temporal behavior
+
+The PB term showed strong differences among systems. XRCC1R194W-LigIIIalpha remained relatively stable, from approximately 227.81 in the first block to 220.21 in the final block. XRCC1WT-Polbeta varied moderately, from 256.79 to 271.91. XRCC1R194W-Polbeta increased substantially, reaching approximately 333.24 in the 250-300 ns block. XRCC1WT-LigIIIalpha showed the strongest increase, from approximately 208.47 in the first block to approximately 395.94 in the 250-300 ns block.
+
+The overall mean PB value was highest for XRCC1WT-LigIIIalpha, approximately 317.57, and lowest for XRCC1R194W-LigIIIalpha, approximately 220.93.
+
+8.2 Interpretation
+
+PB values reflect polar solvation contributions as defined by the selected Poisson-Boltzmann model. Their meaning depends on sign convention and on how complex, receptor, and ligand energies were combined. A larger positive PB contribution is not automatically favorable or unfavorable without considering the complete free-energy equation used by the software.
+
+The pronounced PB increase for XRCC1WT-LigIIIalpha and the later increase for XRCC1R194W-Polbeta suggest that the polar-solvation contribution changes as the sampled conformations evolve. This could be associated with changing charge exposure, interface rearrangement, water accessibility, or electrostatic reorganization.
+
+8.3 Consequences for the study
+
+The PB comparison is a strong warning against relying on a single trajectory-wide value without convergence analysis. The final block may be energetically very different from the first block for some systems. The manuscript should state the dielectric constants, ionic strength, solvent parameters, atomic radii, grid settings, and software version used for PB calculations. These settings can materially affect both absolute values and system rankings.
+
+9. SA energy comparison
+
+9.1 Observed temporal behavior
+
+The SA term also displayed distinct system-specific changes. XRCC1R194W-LigIIIalpha became less negative after the first block, changing from approximately -42.14 to -31.52. XRCC1R194W-Polbeta became more negative, changing from -39.10 to -66.10. XRCC1WT-LigIIIalpha became substantially more negative, changing from -36.35 to -62.33. XRCC1WT-Polbeta became moderately more negative, changing from -34.46 to -48.61.
+
+The most negative overall mean SA values were observed for XRCC1WT-LigIIIalpha and XRCC1R194W-Polbeta.
+
+9.2 Interpretation
+
+The SA term generally represents a solvent-accessibility-dependent nonpolar contribution. Its sign and scale depend on the implementation and surface-area coefficient. A more negative SA value should therefore be interpreted only within the defined MM/PBSA convention.
+
+The opposite trends of XRCC1R194W-LigIIIalpha and XRCC1WT-LigIIIalpha are notable. They show that systems involving the same LigIIIalpha partner do not share identical energetic evolution. The SA contribution may be responding to different packing or exposure patterns, but this cannot be established from the global SA term alone.
+
+9.3 Consequences for the study
+
+The SA results should be interpreted jointly with SASA. A change in SASA does not necessarily map linearly to a change in SA because the energetic calculation may use a specific surface-area model and coefficient. Reporting both terms is useful, but the manuscript should avoid treating the SA component as a direct measurement of solvent exposure.
+
+10. Delta G_bind comparison
+
+10.1 Observed temporal behavior
+
+Delta G_bind showed the strongest evidence of system-dependent energetic evolution. The block means ranged from approximately -168.08 to +39.03 in the supplied results.
+
+XRCC1R194W-LigIIIalpha changed from -112.73 in the first block to -67.21 in the final block, becoming less negative. XRCC1R194W-Polbeta changed from -68.72 to -168.08, becoming more negative. XRCC1WT-LigIIIalpha changed from -85.28 to -57.28, becoming less negative. XRCC1WT-Polbeta changed from +20.03 in the first block to -135.15 in the final block, showing the largest directional change.
+
+The overall averages of block means ranked the systems as follows, from most negative to least negative:
+
+1. XRCC1R194W-Polbeta: approximately -107.23
+2. XRCC1R194W-LigIIIalpha: approximately -86.32
+3. XRCC1WT-LigIIIalpha: approximately -62.44
+4. XRCC1WT-Polbeta: approximately -48.19
+
+This ranking is descriptive and should not be treated as a definitive binding-affinity ranking until convergence, uncertainty, and replicate consistency have been evaluated.
+
+10.2 Interpretation
+
+If the Delta G_bind values use the conventional MM/PBSA sign convention and units of kJ/mol, more negative values generally correspond to more favorable estimated binding. Under that assumption, XRCC1R194W-Polbeta has the most favorable overall block-mean estimate, whereas XRCC1WT-Polbeta has the least favorable overall estimate. However, the strong temporal changes make the ranking sensitive to the selected blocks.
+
+The late improvement of XRCC1WT-Polbeta is especially important. Its early block is positive, but its later blocks are negative. This pattern could reflect relaxation into a more favorable binding configuration, a change in interfacial contacts, or instability in the estimated energy decomposition. Similarly, the less-negative late values for both LigIIIalpha systems may indicate a loss of favorable energetic interactions, but they may also result from changes in the sampled ensemble or model-dependent compensation.
+
+10.3 Consequences for the study
+
+The Delta G_bind comparison should not be reduced to one number per system without showing block-wise behavior. The results suggest that binding-energy estimates may not be stationary over the full 300 ns trajectory. A defensible manuscript should report:
+
+- The block-wise mean and uncertainty
+- The number of frames used per block
+- The equilibration interval selected for production analysis
+- Results for independent replicas, if available
+- The complete MM/PBSA equation and sign convention
+- The force field, dielectric constants, solvent model, and surface-area parameters
+- The sensitivity of the ranking to frame selection and block selection
+
+The observed ranking may be biologically meaningful, but it is not sufficient on its own to establish that the R194W mutation improves binding to Polbeta or LigIIIalpha. Statistical uncertainty and replicate-level reproducibility are required before making that claim.
+
+11. Cross-parameter interpretation
+
+11.1 Structural stability versus structural rearrangement
+
+The combined RMSD and Rg results are the most informative structural pair. RMSD generally increased, while Rg changed only modestly and usually decreased. This combination suggests that the systems may undergo internal rearrangement or movement relative to the reference without large-scale expansion. The data are therefore more consistent with conformational adaptation or reorientation than with a simple global unfolding event.
+
+11.2 Exposure and packing
+
+SASA decreased modestly over time for most systems, supporting a mild compaction or packing process. The mutant systems generally retained higher SASA than XRCC1WT-LigIIIalpha, which may indicate greater solvent exposure or altered packing. Because Rg and SASA are global quantities, they should be supplemented with interface-specific and residue-specific measures.
+
+11.3 Energetic evolution
+
+The MM, PB, SA, and Delta G_bind terms changed substantially for several systems. These changes do not all move in the same direction, which illustrates energetic compensation. For example, a more favorable MM contribution can be offset by a less favorable PB contribution, or vice versa. The total Delta G_bind estimate must therefore be interpreted from its complete decomposition rather than from any single component.
+
+11.4 Mutation and partner dependence
+
+The effect of the R194W mutation is partner-dependent. The mutant and wild-type pairs do not show a uniform shift across all observables. In particular, the Polbeta systems show strong late energetic changes, whereas the LigIIIalpha systems show different structural and energetic patterns. This supports a cautious conclusion: the mutation may alter the interaction landscape in a context-dependent manner rather than producing a universal stabilization or destabilization effect.
+
+12. Consequences for convergence and statistical inference
+
+The comparison plots reveal several possible non-stationary behaviors. A cumulative mean can appear to stabilize even when individual block means continue to change because early and late deviations are averaged together. Therefore, cumulative-mean convergence should not be used as the only convergence criterion.
+
+Recommended checks include:
+
+- Plot the block means directly before calculating cumulative means.
+- Compare the first three blocks with the last three blocks.
+- Estimate autocorrelation times for each parameter.
+- Repeat the analysis with alternative block sizes, such as 25, 50, and 100 ns, where scientifically justified.
+- Analyze independent simulation replicas separately.
+- Calculate confidence intervals using methods appropriate for correlated data.
+- Check whether the system ranking is preserved after removal of an equilibration period.
+- Examine the distribution of block values rather than only their means.
+- Inspect representative structures from early, middle, and late blocks.
+
+Block averaging is particularly relevant for correlated simulation data. The uncertainty of an ordinary mean can be underestimated when neighboring trajectory observations are treated as independent. The treatment of correlated data and the selection of block size should be justified using established statistical guidance, such as Flyvbjerg and Petersen [1], and broader molecular-simulation uncertainty guidance, such as Grossfield and co-workers [2].
+
+13. Manuscript-ready Results and Discussion text
+
+The block-wise comparison of the four systems revealed parameter-dependent structural and energetic behavior over the 300 ns simulations. RMSD generally increased from the initial 0-50 ns interval toward the later trajectory, with the largest late values observed for the R194W systems. In contrast, the radius of gyration changed only modestly and generally decreased after the initial block, indicating that the increase in RMSD was not accompanied by a pronounced global expansion. This combination is consistent with internal conformational rearrangement or reference-relative domain motion rather than an unambiguous unfolding-like transition.
+
+SASA showed moderate temporal stability with a gradual decrease in most systems. XRCC1WT-LigIIIalpha displayed the lowest overall SASA, whereas the R194W complexes generally showed greater surface exposure. These observations suggest differences in global packing or solvent accessibility, although interface-specific surface-area analysis would be required to assign the differences directly to binding-interface exposure.
+
+The MM, PB, and SA components displayed substantial system-specific temporal changes. The direction of these changes was not uniform across the four complexes, indicating that the energetic decomposition was affected by the evolving conformational ensembles and that individual components may compensate one another. The Delta G_bind estimates consequently showed strong block dependence. On the basis of the averages of the six block means, XRCC1R194W-Polbeta had the most negative estimated binding free energy, followed by XRCC1R194W-LigIIIalpha, XRCC1WT-LigIIIalpha, and XRCC1WT-Polbeta. However, the temporal evolution of the estimates, particularly for the Polbeta systems, indicates that the ranking should be treated as provisional until equilibration, autocorrelation, uncertainty, and independent-replica consistency have been assessed.
+
+Overall, the comparison plots support a partner-dependent effect of the R194W mutation rather than a uniform change in structural stability or binding energetics. The findings motivate further analysis of interface contacts, residue-level fluctuations, hydrogen-bond persistence, replicate agreement, and block-size sensitivity before drawing mechanistic conclusions.
+
+14. Limitations that should be stated explicitly
+
+The following limitations apply to the present comparison:
+
+- The analysis uses block summaries and does not replace replicate-level statistical analysis.
+- The six blocks may not be statistically independent.
+- The 50 ns block size was applied uniformly but may not be optimal for every observable.
+- The first block may include equilibration, but no independent equilibration test is encoded in the plotting workflow.
+- The cumulative mean is an unweighted mean of block means.
+- The physical units and sign conventions of MM, PB, SA, and Delta G_bind depend on the source calculation.
+- A global RMSD, Rg, or SASA value cannot identify the structural origin of a difference.
+- A more negative MM/PBSA-related component is not necessarily favorable when considered alone.
+- A difference in block means is not evidence of statistical significance without an uncertainty model.
+
+15. References
+
+[1] Flyvbjerg, H.; Petersen, H. G. Error Estimates on Averages of Correlated Data. The Journal of Chemical Physics 1989, 91, 461-466. https://doi.org/10.1063/1.457480
+
+[2] Grossfield, A.; Patrone, P. N.; Roe, D. R.; et al. Best Practices for Quantification of Uncertainty and Sampling Quality in Molecular Simulations. Living Journal of Computational Molecular Science 2018, 1, 5067. https://doi.org/10.33011/livecoms.1.1.5067
+
+[3] Allen, M. P.; Tildesley, D. J. Computer Simulation of Liquids, 2nd ed.; Oxford University Press: Oxford, 2017. https://doi.org/10.1093/oso/9780198803195.001.0001
+
+[4] Kumari, R.; Kumar, R.; Lynn, A. g_mmpbsa - A GROMACS Tool for High-Throughput MM-PBSA Calculations. Journal of Chemical Information and Modeling 2014, 54, 1951-1962. https://doi.org/10.1021/ci500020m
+
+[5] GROMACS Development Team. GROMACS Documentation. https://manual.gromacs.org/
+
+References [1]-[3] support the interpretation of correlated molecular-dynamics data and sampling quality. Reference [4] is appropriate when the MM/PBSA input quantities were generated with g_mmpbsa or a closely related workflow. Reference [5] should be cited when GROMACS tools were used to generate the original RMSD, Rg, or SASA data. The exact software version and calculation settings should be reported alongside these citations.
